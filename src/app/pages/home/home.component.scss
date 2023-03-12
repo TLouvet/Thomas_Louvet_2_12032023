@@ -1,0 +1,17 @@
+@import '../../../styles.scss';
+
+.keyCardsContainer{
+  display: flex;
+  column-gap: 40px;
+  justify-content: center;
+}
+
+.keyNumberCard {
+  border: 1px solid $primary-color;
+  border-radius: 10px;
+}
+
+.chartContainer {
+  width: 100%;
+  max-height: 600px;
+}

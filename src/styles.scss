@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+$primary-color: #088590;
+
+body {
+  margin: auto;
+}
+
+.errorText {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 20px auto;
+}

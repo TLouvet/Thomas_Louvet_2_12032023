@@ -1,0 +1,51 @@
+@import '../../../styles.scss';
+
+.cardsContainer {
+  display: flex;
+  column-gap: 40px;
+  justify-content: center;
+  margin-bottom: 15px;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+    row-gap: 20px;
+    width: 90%;
+    margin: auto;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+}
+
+.chartContainer {
+
+
+  width: 50%;
+  max-height: 600px;
+  margin: auto;
+
+  @media screen and (max-width: 1365px) {
+    width: 65%;
+  }
+
+  @media screen and (max-width: 1024px) {
+    width: 90%;
+  }
+
+  @media screen and (max-width: 767px) {
+    width: 100%;
+  }
+}
+
+.homeLink {
+  margin: 20px auto;
+  display: block;
+  width: 200px;
+  text-align: center;
+  background-color: #088590;
+  color: white;
+  border-radius: 7px;
+  padding: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.2rem;
+}

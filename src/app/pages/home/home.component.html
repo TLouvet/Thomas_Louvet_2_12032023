@@ -1,3 +1,16 @@
-<h2>Olympic games app</h2>
-<hr />
-<p>{{ (olympics$ | async)?.length }} data loaded</p>
+<main>
+  <page-title title="Medals per Country"></page-title>
+  <div class="keyCardsContainer" *ngIf="(olympics$ | async)?.length; else errorMessage">
+    <home-card title="Number of JOs" [value]="maxParticipations | async"> </home-card>
+    <home-card title="Number of countries" [value]="(olympics$ | async)?.length || 0"></home-card>
+  </div>
+  <ng-template #errorMessage>
+    <div class="keyCardsContainer">
+      <p>An error happened while loading the data.</p>
+    </div>
+  </ng-template>
+  <div class="chartContainer" *ngIf="((data$ | async) || []).length > 0">
+    <ngx-charts-pie-chart [labels]="true" [trimLabels]="false" (select)="onSelect($event)" [tooltipText]="setTooltip"
+      [results]="data$ | async"></ngx-charts-pie-chart>
+  </div>
+</main>

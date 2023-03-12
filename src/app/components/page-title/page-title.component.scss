@@ -1,0 +1,11 @@
+@import '../../../styles.scss';
+
+h1 {
+  color: white;
+  background-color: $primary-color;
+  text-align: center;
+  width: 300px;
+  border-radius: 7px;
+  margin: 20px auto;
+  padding: 10px;
+}
