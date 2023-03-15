@@ -1,7 +1,7 @@
 # OlympicGamesStarter
 
-Project generated with Angular Cli 15.2.1
-Clone the project using `git clone https://github.com/TLouvet/Thomas_Louvet_2_12032023.git`
+Project generated with Angular Cli 15.2.1 <br/>
+Clone the project using `git clone https://github.com/TLouvet/Thomas_Louvet_2_12032023.git` <br/>
 Inside the new folder, run `npm install`
 
 ## Development server
