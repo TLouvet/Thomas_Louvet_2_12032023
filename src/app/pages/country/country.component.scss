@@ -4,7 +4,7 @@
   display: flex;
   column-gap: 40px;
   justify-content: center;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
 
   @media screen and (max-width: 767px) {
     flex-direction: column;
@@ -48,8 +48,16 @@
   font-size: 1.2rem;
 }
 
+.graphTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $secondary-color;
+  text-align: center;
+  margin: 0 0 20px 0;
+}
+
 .xAxisLabel {
-  font-size: 24px;
+  font-size: 32px;
   color: $secondary-color;
   text-align: center;
   margin: 0 0 30px 0;

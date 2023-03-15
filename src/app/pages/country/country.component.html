@@ -7,6 +7,7 @@
     <info-card title="Total number of medals" [value]="medals"></info-card>
     <info-card title="Total number of athletes" [value]="athletes"></info-card>
   </div>
+  <h2 class="graphTitle">Medals per participation</h2>
   <div class="chartContainer">
     <ngx-charts-line-chart *ngIf="data.length > 0" [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="true"
       [xAxis]="true" [yAxis]="true" yAxisLabel="" [timeline]="false" [yScaleMin]="yMin" [yScaleMax]="yMax"
