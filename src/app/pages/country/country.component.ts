@@ -12,9 +12,9 @@ import { Olympic } from 'src/app/core/models/Olympic';
 })
 export class CountryComponent implements OnInit, OnDestroy {
   public countryName: string = this.route.snapshot.params['country'];
-  public medals: number = 0;
-  public athletes: number = 0;
-  public participations: number = 0;
+  public medals = 0;
+  public athletes = 0;
+  public participations = 0;
   public data: MultiSeries = [];
   public loading = true;
   public error = '';

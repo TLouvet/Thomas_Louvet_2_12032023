@@ -20,8 +20,8 @@ import { OlympicService } from 'src/app/core/services/olympic.service';
 export class HomeComponent implements OnInit, OnDestroy {
   public olympics$: Observable<Olympic[]> = of<Olympic[]>([]);
 
-  public maxParticipations: number = 0;
-  public countries: number = 0;
+  public maxParticipations = 0;
+  public countries = 0;
   public data: SingleSeries = [];
   public loading = true;
   public error = '';
