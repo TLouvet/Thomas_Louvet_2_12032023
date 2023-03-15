@@ -5,12 +5,13 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Olympic } from '../models/Olympic';
 import { Participation } from '../models/Participation';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OlympicService {
-  private olympicUrl = './assets/mock/olympic.json';
+  private olympicUrl = environment.apiUrl;
   private olympics$ = new BehaviorSubject<Olympic[]>([]);
   private error = null;
   constructor(private http: HttpClient) {}

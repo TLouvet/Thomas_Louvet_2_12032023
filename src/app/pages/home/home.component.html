@@ -1,7 +1,5 @@
 <p *ngIf="loading">Loading...</p>
-<div class="keyCardsContainer" *ngIf="error">
-  <p>{{error}}</p>
-</div>
+<p class="errorText" *ngIf="error">{{ error }}</p>
 <main *ngIf="!loading && !error">
   <page-title title="Medals per Country"></page-title>
   <div class="keyCardsContainer" *ngIf="maxParticipations && countries">
