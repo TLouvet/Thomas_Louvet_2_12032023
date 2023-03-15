@@ -32,3 +32,8 @@ body {
     align-items: center;
   }
 }
+
+[ngx-charts-axis-label] {
+  font-size: 32px;
+  fill: $secondary-color; // fill because we work with svg data
+}

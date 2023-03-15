@@ -10,11 +10,10 @@
   <h2 class="graphTitle">Medals per participation</h2>
   <div class="chartContainer">
     <ngx-charts-line-chart *ngIf="data.length > 0" [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="true"
-      [xAxis]="true" [yAxis]="true" yAxisLabel="" [timeline]="false" [yScaleMin]="yMin" [yScaleMax]="yMax"
-      [results]="data">
+      [xAxis]="true" [yAxis]="true" yAxisLabel="Medals" xAxisLabel="Dates" [timeline]="false" [yScaleMin]="yMin"
+      [yScaleMax]="yMax" [results]="data">
     </ngx-charts-line-chart>
   </div>
-  <p class="xAxisLabel">Dates</p>
   <a routerLink="/" class="homeLink">
     <span>Go back</span>
   </a>
