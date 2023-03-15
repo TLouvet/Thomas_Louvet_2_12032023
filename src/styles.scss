@@ -11,3 +11,28 @@ body {
   font-weight: 700;
   margin: 20px auto;
 }
+
+// Does not work when placed on the home component
+.ngx-charts-tooltip-content {
+  background-color: $primary-color !important;
+
+  .tooltip-caret.position-top {
+    border-top-color: $primary-color !important;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  p:first-child {
+    margin-bottom: 5px;
+  }
+
+  .tooltip-val {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg{
+      
+    }
+  }
+}
+

@@ -1,20 +1,19 @@
-<page-title [title]="countryName | titlecase"></page-title>
-<section *ngIf="(olympic$ | async)?.participations">
+<p *ngIf="loading">Loading...</p>
+<p class="errorText" *ngIf="error">{{ error }}</p>
+<section *ngIf="!error && !loading">
+  <page-title [title]="countryName | titlecase"></page-title>
   <div class="cardsContainer">
-    <home-card title="Number of entries" [value]="countryParticipations$ | async"></home-card>
-    <home-card title="Total number of medals" [value]="totalMedals$ | async"></home-card>
-    <home-card title="Total number of athletes" [value]="totalAthletes$ | async"></home-card>
+    <info-card title="Number of entries" [value]="participations"></info-card>
+    <info-card title="Total number of medals" [value]="medals"></info-card>
+    <info-card title="Total number of athletes" [value]="athletes"></info-card>
   </div>
   <div class="chartContainer">
-    <ngx-charts-line-chart *ngIf="(data$ | async)?.at(0)?.series" [legend]="false" [showXAxisLabel]="true"
-      [showYAxisLabel]="true" [xAxis]="true" [yAxis]="true" xAxisLabel="Dates" yAxisLabel="" [timeline]="false"
-      [yScaleMin]="(((totalMedals$ | async) || 0) / ((countryParticipations$ | async) || 1)) - 10"
-      [yScaleMax]="(((totalMedals$ | async) || 0) / ((countryParticipations$ | async) || 1)) + 10"
-      [results]="data$ | async">
+    <ngx-charts-line-chart *ngIf="data.length > 0" [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="true"
+      [xAxis]="true" [yAxis]="true" xAxisLabel="Dates" yAxisLabel="" [timeline]="false" [yScaleMin]="yMin"
+      [yScaleMax]="yMax" [results]="data">
     </ngx-charts-line-chart>
   </div>
+  <a routerLink="/" class="homeLink">
+    <span>Go back</span>
+  </a>
 </section>
-<p class="errorText" *ngIf="error">{{ error }}</p>
-<a routerLink="/" class="homeLink">
-  <span>Go back</span>
-</a>

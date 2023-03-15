@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CountryComponent } from './pages/country/country.component';
-import { HomeCardComponent } from './components/home-card/home-card.component';
+import { InfoCardComponent } from './components/info-card/info-card.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PageTitleComponent } from './components/page-title/page-title.component';
@@ -17,7 +17,7 @@ import { PageTitleComponent } from './components/page-title/page-title.component
     HomeComponent,
     NotFoundComponent,
     CountryComponent,
-    HomeCardComponent,
+    InfoCardComponent,
     PageTitleComponent,
   ],
   imports: [

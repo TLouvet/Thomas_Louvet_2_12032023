@@ -1,6 +1,6 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DataItem, MultiSeries, SingleSeries } from '@swimlane/ngx-charts';
+import { MultiSeries, SingleSeries } from '@swimlane/ngx-charts';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Olympic } from '../models/Olympic';
@@ -18,7 +18,7 @@ export class OlympicService {
   loadInitialData() {
     return this.http.get<Olympic[]>(this.olympicUrl).pipe(
       tap((value) => this.olympics$.next(value)),
-      catchError((error, caught) => {
+      catchError((error) => {
         console.error(error);
         this.error = error;
         this.olympics$.next([]);
@@ -29,35 +29,37 @@ export class OlympicService {
 
   // Main Page Data
   getOlympics(): Observable<Olympic[]> {
-    return this.olympics$.asObservable();
-  }
-
-  getMaxParticipations() {
-    return this.olympics$.pipe(
-      map((olympics) =>
-        Math.max(...olympics.map((olympic) => olympic.participations.length))
-      )
-    );
-  }
-
-  getHomeData(): Observable<SingleSeries> {
-    return this.olympics$.pipe(
-      map((olympics) => {
-        return olympics.map((olympic) => ({
-          name: olympic.country,
-          value: olympic.participations.reduce(
-            (acc, curr) => acc + curr.medalsCount,
-            0
-          ),
-        }));
+    return this.olympics$.asObservable().pipe(
+      tap(() => {
+        if (this.error) {
+          throw new Error('An error occured while loading');
+        }
       })
     );
+  }
+
+  getMaxParticipations(olympics: Olympic[]) {
+    const participations = olympics.map(
+      (olympic) => olympic.participations.length
+    );
+    return Math.max(...participations);
+  }
+
+  getHomeData(olympics: Olympic[]): SingleSeries {
+    return olympics.map((olympic) => ({
+      name: olympic.country,
+      value: olympic.participations.reduce(
+        (acc, curr) => acc + curr.medalsCount,
+        0
+      ),
+    }));
   }
 
   // Single country data
   getCountryByName(country: string) {
     return this.olympics$.pipe(
       map((olympics) => {
+        // Would be an error on first load
         if (this.error) {
           throw new Error('An error occured while loading data');
         }
@@ -78,53 +80,31 @@ export class OlympicService {
     );
   }
 
-  getCountryParticipations(country: string) {
-    return this.olympics$.pipe(
-      map((olympics) => {
-        const selectedCountry = this.findCountry(olympics, country);
-        if (!selectedCountry) {
-          return 0;
-        }
-        return selectedCountry.participations.length;
-      })
-    );
+  getCountryParticipations(olympic: Olympic) {
+    return olympic.participations.length;
   }
 
-  getCountryTotalMedals(country: string) {
-    return this.olympics$.pipe(
-      map((olympics) => {
-        const selectedCountry = this.findCountry(olympics, country);
-        if (!selectedCountry) {
-          return 0;
-        }
-        return this.getCountryValue(selectedCountry, 'medalsCount');
-      })
-    );
+  getCountryTotalMedals(olympic: Olympic) {
+    return this.getCountryValue(olympic, 'medalsCount');
   }
 
-  getCountryTotalAthletes(country: string) {
-    return this.olympics$.pipe(
-      map((olympics) => {
-        const selectedCountry = this.findCountry(olympics, country);
-        if (!selectedCountry) {
-          return 0;
-        }
-        return this.getCountryValue(selectedCountry, 'athleteCount');
-      })
-    );
+  getCountryTotalAthletes(olympic: Olympic) {
+    return this.getCountryValue(olympic, 'athleteCount');
   }
 
-  getCountryData(country: string): Observable<MultiSeries> {
-    return this.olympics$.pipe(
-      map((olympics) => {
-        const selectedCountry = this.findCountry(olympics, country);
-        if (!selectedCountry) {
-          return [];
-        }
-        const formattedData = this.formatCountryData(selectedCountry);
-        return Array(formattedData);
-      })
-    );
+  getCountryData(olympic: Olympic): MultiSeries {
+    const formattedData = this.formatCountryData(olympic);
+    return Array(formattedData);
+  }
+
+  getLessMedalYears(olympic: Olympic) {
+    const medals = olympic.participations.map((p) => p.medalsCount);
+    return Math.min(...medals);
+  }
+
+  getMaxMedalYears(olympic: Olympic) {
+    const medals = olympic.participations.map((p) => p.medalsCount);
+    return Math.max(...medals);
   }
 
   private formatCountryData(country: Olympic) {
@@ -139,14 +119,7 @@ export class OlympicService {
     };
   }
 
-  private findCountry(countries: Olympic[], country: string) {
-    return countries.find((c) => c.country === country);
-  }
-
-  private getCountryValue(country: Olympic, key: string) {
-    return country.participations.reduce(
-      (a, b) => a + Number(b[key as keyof Participation]),
-      0
-    );
+  private getCountryValue(country: Olympic, key: keyof Participation) {
+    return country.participations.reduce((a, b) => a + Number(b[key]), 0);
   }
 }

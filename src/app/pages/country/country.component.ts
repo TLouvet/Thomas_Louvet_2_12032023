@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OlympicService } from 'src/app/core/services/olympic.service';
-import { Olympic } from 'src/app/core/models/Olympic';
-import { catchError, Observable, of, Subject, takeUntil } from 'rxjs';
+import { catchError, Subject, takeUntil, throwError } from 'rxjs';
 import { MultiSeries } from '@swimlane/ngx-charts';
+import { Olympic } from 'src/app/core/models/Olympic';
 
 @Component({
   selector: 'app-country',
@@ -11,19 +11,19 @@ import { MultiSeries } from '@swimlane/ngx-charts';
   styleUrls: ['./country.component.scss'],
 })
 export class CountryComponent implements OnInit, OnDestroy {
-  olympic$: Observable<Olympic> = of({
-    country: '',
-    id: 0,
-    participations: [],
-  });
-  totalMedals$!: Observable<number>;
-  totalAthletes$!: Observable<number>;
-  countryParticipations$!: Observable<number>;
-  countryName: string = this.route.snapshot.params['country'];
-  data$: Observable<MultiSeries> = of([]);
-  error = '';
+  public countryName: string = this.route.snapshot.params['country'];
+  public medals: number = 0;
+  public athletes: number = 0;
+  public participations: number = 0;
+  public data: MultiSeries = [];
+  public loading = true;
+  public error = '';
 
-  destroy$!: Subject<boolean>;
+  public yMin = 0;
+  public yMax = 0;
+
+  private Y_DELTA = 10;
+  private destroy$!: Subject<boolean>;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,34 +33,34 @@ export class CountryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.destroy$ = new Subject<boolean>();
-    this.olympic$ = this.olympicService.getCountryByName(this.countryName);
-
-    this.olympic$
+    this.olympicService
+      .getCountryByName(this.countryName)
       .pipe(
-        catchError((err, caught) => {
+        catchError((err) => {
           this.error = err?.message;
           if (err?.message === 'Country not found') {
             this.router.navigate(['/not-found']);
           }
-
-          return of(null);
+          return throwError(() => new Error(err?.message));
         }),
         takeUntil(this.destroy$)
       )
-      .subscribe();
+      .subscribe({
+        next: (olympic) => this.handleSubscription(olympic),
+        error: (err) => console.error(err?.message),
+      });
+  }
 
-    this.countryParticipations$ = this.olympicService.getCountryParticipations(
-      this.countryName
-    );
+  handleSubscription(olympic: Olympic) {
+    this.participations = this.olympicService.getCountryParticipations(olympic);
 
-    this.totalMedals$ = this.olympicService.getCountryTotalMedals(
-      this.countryName
-    );
-    this.totalAthletes$ = this.olympicService.getCountryTotalAthletes(
-      this.countryName
-    );
+    this.medals = this.olympicService.getCountryTotalMedals(olympic);
+    this.athletes = this.olympicService.getCountryTotalAthletes(olympic);
+    this.data = this.olympicService.getCountryData(olympic);
 
-    this.data$ = this.olympicService.getCountryData(this.countryName);
+    this.yMin = this.olympicService.getLessMedalYears(olympic) - this.Y_DELTA;
+    this.yMax = this.olympicService.getMaxMedalYears(olympic) + this.Y_DELTA;
+    this.loading = false;
   }
 
   ngOnDestroy(): void {
