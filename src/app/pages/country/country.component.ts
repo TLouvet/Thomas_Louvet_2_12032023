@@ -47,11 +47,15 @@ export class CountryComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (olympic) => this.handleSubscription(olympic),
-        error: (err) => console.error(err?.message),
+        error: (err) => this.handleError(err),
       });
   }
 
   handleSubscription(olympic: Olympic) {
+    if (!olympic.participations) {
+      return;
+    }
+
     this.participations = this.olympicService.getCountryParticipations(olympic);
 
     this.medals = this.olympicService.getCountryTotalMedals(olympic);
@@ -60,6 +64,11 @@ export class CountryComponent implements OnInit, OnDestroy {
 
     this.yMin = this.olympicService.getLessMedalYears(olympic) - this.Y_DELTA;
     this.yMax = this.olympicService.getMaxMedalYears(olympic) + this.Y_DELTA;
+    this.loading = false;
+  }
+
+  handleError(error: Error) {
+    console.error(error?.message);
     this.loading = false;
   }
 

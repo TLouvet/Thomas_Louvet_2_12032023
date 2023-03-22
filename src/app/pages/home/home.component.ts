@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataItem, SingleSeries } from '@swimlane/ngx-charts';
 import {
@@ -29,6 +29,15 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private olympicService: OlympicService, private router: Router) {}
 
+  @HostListener('click', ['$event'])
+  onLabelClick(event: MouseEvent) {
+    const x = event.target as HTMLElement;
+    if (x.tagName === 'text') {
+      const country = x.innerHTML.trim();
+      this.router.navigateByUrl(`/country/${country}`);
+    }
+  }
+
   ngOnInit(): void {
     this.destroy$ = new Subject<boolean>();
 
@@ -44,7 +53,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (olympics) => this.handleSubscription(olympics),
-        error: (err) => console.error(err?.message),
+        error: (err) => this.handleError(err),
       });
   }
 
@@ -52,6 +61,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.maxParticipations = this.olympicService.getMaxParticipations(olympics);
     this.data = this.olympicService.getHomeData(olympics);
     this.countries = olympics.length;
+    this.loading = false;
+  }
+
+  handleError(error: Error) {
+    console.error(error?.message);
     this.loading = false;
   }
 

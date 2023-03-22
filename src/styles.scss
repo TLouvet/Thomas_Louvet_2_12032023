@@ -37,3 +37,7 @@ body {
   font-size: 32px;
   fill: $secondary-color; // fill because we work with svg data
 }
+
+[ngx-charts-pie-label]{
+  cursor: pointer;
+}
