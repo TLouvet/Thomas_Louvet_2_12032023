@@ -33,11 +33,12 @@ body {
   }
 }
 
+[ngx-charts-pie-label]{
+  cursor: pointer;
+}
+
+// Single country page chart
 [ngx-charts-axis-label] {
   font-size: 32px;
   fill: $secondary-color; // fill because we work with svg data
-}
-
-[ngx-charts-pie-label]{
-  cursor: pointer;
 }

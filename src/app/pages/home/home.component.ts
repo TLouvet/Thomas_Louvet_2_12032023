@@ -31,9 +31,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   @HostListener('click', ['$event'])
   onLabelClick(event: MouseEvent) {
-    const x = event.target as HTMLElement;
-    if (x.tagName === 'text') {
-      const country = x.innerHTML.trim();
+    const element = event.target as HTMLElement;
+    if (element.tagName === 'text') {
+      const country = element.innerHTML.trim();
       this.router.navigateByUrl(`/country/${country}`);
     }
   }
